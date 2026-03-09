@@ -1,1156 +1,840 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ido Grinberg — Private Mentorship</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ido Grinberg — Private Mentorship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <style>
+<style>
     /* ─────────────────────────────────────────────
-       RESET & TOKENS
+    RESET & TOKENS
     ───────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --linen:       #FAF8F4;
-      --sand:        #F0EDE5;
-      --ivory:       #FDFCF9;
-      --forest:      #2D3B2D;
-      --forest-mid:  #3E5240;
-      --sage:        #8AAF7E;
-      --sage-pale:   #D4E4CE;
-      --warm:        #B89A6A;
-      --ink:         #2A2A26;
-      --stone:       #7A7268;
-      --pebble:      #B0A998;
-      --line:        #E4DDD3;
-      --white:       #FFFFFF;
+    --linen:       #FAF8F4;
+    --sand:        #F0EDE5;
+    --ivory:       #FDFCF9;
+    --forest:      #2D3B2D;
+    --forest-mid:  #3E5240;
+    --sage:        #8AAF7E;
+    --sage-pale:   #D4E4CE;
+    --warm:        #B89A6A;
+    --ink:         #2A2A26;
+    --stone:       #7A7268;
+    --pebble:      #B0A998;
+    --line:        #E4DDD3;
+    --white:       #FFFFFF;
 
-      /* Hero dark tint */
-      --hero-dark:   14, 20, 14;
+    /* Hero dark tint */
+    --hero-dark:   14, 20, 14;
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
 
     body {
-      font-family: 'Jost', sans-serif;
-      font-weight: 300;
-      background: var(--linen);
-      color: var(--ink);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--linen);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
     }
 
     /* Paper-grain texture overlay */
     body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 9999;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.022;
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.022;
     }
 
     /* ─────────────────────────────────────────────
-       NAVBAR
-       Default: fully transparent, white text
-       .scrolled: frosted glass, dark text
+    NAVBAR
     ───────────────────────────────────────────── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 48px;
-
-      /* Transparent default */
-      background: transparent;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      border-bottom: 1px solid transparent;
-      box-shadow: none;
-
-      /* Smooth transition for all properties */
-      transition:
-        background   0.5s ease,
-        backdrop-filter 0.5s ease,
-        -webkit-backdrop-filter 0.5s ease,
-        border-color 0.5s ease,
-        box-shadow   0.5s ease;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 48px;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    transition: background 0.5s ease, backdrop-filter 0.5s ease, -webkit-backdrop-filter 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
     }
 
-    /* Scrolled state — toggled by IntersectionObserver */
     nav.scrolled {
-      background: rgba(250, 248, 244, 0.90);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(176, 169, 152, 0.18);
-      box-shadow: 0 2px 28px rgba(45, 59, 45, 0.08);
+    background: rgba(250, 248, 244, 0.90);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(176, 169, 152, 0.18);
+    box-shadow: 0 2px 28px rgba(45, 59, 45, 0.08);
     }
 
-    /* Logo */
     .nav-logo {
-      font-family: 'Lora', serif;
-      font-size: 1.12rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      color: rgba(253, 252, 249, 0.95);   /* white on hero */
-      transition: color 0.5s ease;
+    font-family: 'Lora', serif;
+    font-size: 1.12rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: rgba(253, 252, 249, 0.95);
+    transition: color 0.5s ease;
     }
     nav.scrolled .nav-logo { color: var(--forest); }
     .nav-logo span {
-      font-style: italic;
-      color: rgba(212, 228, 206, 0.9);    /* sage-pale on hero */
-      transition: color 0.5s ease;
+    font-style: italic;
+    color: rgba(212, 228, 206, 0.9);
+    transition: color 0.5s ease;
     }
     nav.scrolled .nav-logo span { color: var(--warm); }
 
-    /* Links */
     .nav-links { display: flex; align-items: center; gap: 36px; }
     .nav-links a {
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: rgba(250, 248, 244, 0.70);   /* soft white on hero */
-      transition: color 0.3s ease;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(250, 248, 244, 0.70);
+    transition: color 0.3s ease;
     }
     .nav-links a:hover { color: rgba(250, 248, 244, 1); }
     nav.scrolled .nav-links a       { color: var(--stone); }
     nav.scrolled .nav-links a:hover { color: var(--forest); }
 
-    /* CTA pill */
     .nav-pill {
-      padding: 10px 24px;
-      border-radius: 100px;
-      background: rgba(250, 248, 244, 0.18);   /* ghost pill on hero */
-      border: 1px solid rgba(250, 248, 244, 0.35);
-      color: rgba(250, 248, 244, 0.92) !important;
-      transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s !important;
+    padding: 10px 24px;
+    border-radius: 100px;
+    background: rgba(250, 248, 244, 0.18);
+    border: 1px solid rgba(250, 248, 244, 0.35);
+    color: rgba(250, 248, 244, 0.92) !important;
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s !important;
     }
     .nav-pill:hover {
-      background: rgba(250, 248, 244, 0.28) !important;
-      border-color: rgba(250, 248, 244, 0.6) !important;
-      color: #fff !important;
-      transform: translateY(-1px);
+    background: rgba(250, 248, 244, 0.28) !important;
+    border-color: rgba(250, 248, 244, 0.6) !important;
+    color: #fff !important;
+    transform: translateY(-1px);
     }
     nav.scrolled .nav-pill {
-      background: var(--forest) !important;
-      border-color: var(--forest) !important;
-      color: var(--white) !important;
+    background: var(--forest) !important;
+    border-color: var(--forest) !important;
+    color: var(--white) !important;
     }
     nav.scrolled .nav-pill:hover {
-      background: var(--forest-mid) !important;
-      border-color: var(--forest-mid) !important;
+    background: var(--forest-mid) !important;
+    border-color: var(--forest-mid) !important;
     }
 
-    /* Mobile: hide text links, keep pill */
     @media (max-width: 580px) {
-      nav { padding: 18px 22px; }
-      .nav-links a:not(.nav-pill) { display: none; }
+    nav { padding: 18px 22px; }
+    .nav-links a:not(.nav-pill) { display: none; }
     }
 
     /* ─────────────────────────────────────────────
-       HERO
-       Full-screen video background.
-       Content pinned to bottom-third via absolute positioning.
+    HERO
     ───────────────────────────────────────────── */
     .hero {
-      position: relative;
-      width: 100%;
-      height: 100svh;
-      min-height: 620px;
-      overflow: hidden;
-      background: rgb(var(--hero-dark)); /* fallback while Vimeo loads */
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 620px;
+    overflow: hidden;
+    background: rgb(var(--hero-dark));
     }
 
-    /* ── Video layer ── */
     .hero-video-bg {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      z-index: 0;
-      pointer-events: none;
+    position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none;
     }
-    /* "object-fit: cover" equivalent for iframes */
     .hero-video-bg iframe {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      /* 16:9 cover trick */
-      width: 177.78vh;   /* 100vh × (16/9) */
-      height: 56.25vw;   /* 100vw × (9/16) */
-      min-width: 100%;
-      min-height: 100%;
-      transform: translate(-50%, -50%);
-      border: none;
+    position: absolute; top: 50%; left: 50%;
+    width: 177.78vh; height: 56.25vw; min-width: 100%; min-height: 100%;
+    transform: translate(-50%, -50%); border: none;
     }
 
-    /* ── Overlay layers ── */
-    /* Layer 1: Subtle global darkening to keep video readable as art */
     .hero-tint {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background: rgba(var(--hero-dark), 0.20);
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: rgba(var(--hero-dark), 0.20);
     }
 
-    /* Layer 2: Strong bottom-up gradient — anchors content legibility */
     .hero-gradient {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: linear-gradient(
-        to top,
-        rgba(var(--hero-dark), 0.88) 0%,
-        rgba(var(--hero-dark), 0.65) 22%,
-        rgba(var(--hero-dark), 0.30) 45%,
-        rgba(var(--hero-dark), 0.05) 68%,
-        transparent 100%
-      );
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(to top, rgba(var(--hero-dark), 0.88) 0%, rgba(var(--hero-dark), 0.65) 22%, rgba(var(--hero-dark), 0.30) 45%, rgba(var(--hero-dark), 0.05) 68%, transparent 100%);
     }
 
-    /* Layer 3: Soft edge vignette for depth */
     .hero-vignette {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      background: radial-gradient(
-        ellipse at center,
-        transparent 42%,
-        rgba(var(--hero-dark), 0.30) 100%
-      );
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 42%, rgba(var(--hero-dark), 0.30) 100%);
     }
 
-    /* ── Content block — two-column bar pinned to bottom ── */
     .hero-inner {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
-      padding: 0 56px 52px;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 40px;
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 0 56px 52px;
+    display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between;
+    gap: 40px;
     }
 
-    /* Left col: headline + subtitle */
     .hero-text-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      flex: 1;
-      min-width: 0;
+    display: flex; flex-direction: column; align-items: flex-start; flex: 1; min-width: 0;
     }
 
-    /* Right col: buttons stacked */
     .hero-cta-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-      flex-shrink: 0;
-      width: 240px;
-      opacity: 0;
-      animation: heroRise 1s 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    display: flex; flex-direction: column; align-items: flex-end;
+    gap: 12px; flex-shrink: 0; width: 240px;
+    opacity: 0; animation: heroRise 1s 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
+    /* ── BUTTON GLOW ANIMATION (2 seconds) ── */
+    @keyframes glowPulse {
+        0% { box-shadow: 0 0 0 0 rgba(250, 248, 244, 0.6); }
+        70% { box-shadow: 0 0 0 12px rgba(250, 248, 244, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(250, 248, 244, 0); }
+    }
+
+    /* ─────────────────────────────────────────────
+       MOBILE STYLES UPDATED
+    ───────────────────────────────────────────── */
     @media (max-width: 680px) {
-      .hero-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 28px 44px;
-        gap: 28px;
-      }
-      .hero-cta-col {
-        align-items: flex-start;
-        width: 100%;
-      }
-    }
-    @media (min-width: 1200px) {
-      .hero-inner { padding: 0 80px 64px; }
+        .hero-inner {
+            top: auto;
+            bottom: 0;
+            height: auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: center;
+            padding: 0 28px 48px;
+            gap: 28px;
+        }
+
+        .hero-text-col {
+            align-items: center;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .hero-tag { justify-content: center; }
+        .hero-sub { max-width: 100%; }
+
+        .hero-cta-col {
+            flex-direction: column; /* Stack buttons nicely */
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .cta-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* SHOW buttons on mobile */
+        .cta-item .btn-primary,
+        .cta-item .btn-outline { 
+            display: block; 
+            width: 100%; 
+            max-width: 320px; /* Prevent them from getting too wide on tablets */
+        }
+
+        /* HIDE the text hints on mobile */
+        .cta-hint {
+            display: none !important;
+        }
     }
 
-    /* Eyebrow tag */
+    @media (min-width: 1200px) {
+    .hero-inner { padding: 0 80px 64px; }
+    }
+    
     .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.30em;
-      text-transform: uppercase;
-      color: var(--sage-pale);
-      margin-bottom: 18px;
-      opacity: 0;
-      animation: heroRise 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.68rem; font-weight: 400; letter-spacing: 0.30em; text-transform: uppercase;
+    color: var(--sage-pale); margin-bottom: 18px;
+    opacity: 0; animation: heroRise 0.9s 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .hero-tag::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: rgba(212, 228, 206, 0.45);
+    content: ''; display: block; width: 28px; height: 1px; background: rgba(212, 228, 206, 0.45);
     }
 
-    /* Headline */
     .hero h1 {
-      font-family: 'Lora', serif;
-      font-size: clamp(2.6rem, 5.2vw, 5rem);
-      font-weight: 400;
-      line-height: 1.10;
-      letter-spacing: -0.02em;
-      color: rgba(253, 252, 249, 0.97);
-      margin-bottom: 16px;
-      text-shadow: 0 2px 32px rgba(var(--hero-dark), 0.50);
-      opacity: 0;
-      animation: heroRise 1.1s 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    font-family: 'Lora', serif; font-size: clamp(2.6rem, 5.2vw, 5rem);
+    font-weight: 400; line-height: 1.10; letter-spacing: -0.02em;
+    color: rgba(253, 252, 249, 0.97); margin-bottom: 16px;
+    text-shadow: 0 2px 32px rgba(var(--hero-dark), 0.50);
+    opacity: 0; animation: heroRise 1.1s 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--sage-pale);
-    }
+    .hero h1 em { font-style: italic; color: var(--sage-pale); }
 
-    /* Subtitle */
     .hero-sub {
-      font-size: clamp(0.92rem, 1.5vw, 1.04rem);
-      font-weight: 300;
-      line-height: 1.80;
-      color: rgba(250, 248, 244, 0.55);
-      max-width: 480px;
-      margin-bottom: 0;
-      opacity: 0;
-      animation: heroRise 1.1s 0.70s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    font-size: clamp(0.92rem, 1.5vw, 1.04rem); font-weight: 300; line-height: 1.80;
+    color: rgba(250, 248, 244, 0.55); max-width: 480px; margin-bottom: 0;
+    opacity: 0; animation: heroRise 1.1s 0.70s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    /* CTA hint labels */
     .cta-hint {
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(250, 248, 244, 0.36);
-      margin-bottom: 8px;
-      text-align: right;
+    display: block; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(250, 248, 244, 0.36); margin-bottom: 8px;
+    text-align: right; text-decoration: none;
     }
-    @media (max-width: 680px) {
-      .cta-hint { text-align: left; }
-    }
-
-    /* Wrapper for hint + button pair */
-    .cta-item {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      width: 100%;
-    }
-    @media (max-width: 680px) {
-      .cta-item { align-items: flex-start; }
-    }
-
-    /* ── Primary CTA — solid white pill ── */
+    
+    .cta-item { display: flex; flex-direction: column; align-items: flex-end; width: 100%; }
+    
     .btn-primary {
-      display: block;
-      width: 100%;
-      padding: 17px 36px;
-      background: rgba(250, 248, 244, 0.95);
-      color: var(--forest);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.81rem;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      text-align: center;
-      border-radius: 100px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 28px rgba(var(--hero-dark), 0.35);
-      transition: background 0.35s, transform 0.3s, box-shadow 0.35s;
+    display: block; width: 100%; padding: 17px 36px;
+    background: rgba(250, 248, 244, 0.95); color: var(--forest);
+    font-family: 'Jost', sans-serif; font-size: 0.81rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; text-align: center;
+    border-radius: 100px; border: none; cursor: pointer;
+    
+    /* Animation applied here */
+    animation: glowPulse 2s infinite;
+    
+    transition: background 0.35s, transform 0.3s, box-shadow 0.35s;
     }
     .btn-primary:hover {
-      background: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 14px 44px rgba(var(--hero-dark), 0.42);
+    background: #fff; transform: translateY(-2px);
+    /* Pause animation on hover if desired, or let it continue */
+    box-shadow: 0 14px 44px rgba(var(--hero-dark), 0.42);
     }
 
-    /* ── Secondary CTA — ghost pill ── */
     .btn-outline {
-      display: block;
-      width: 100%;
-      padding: 16px 36px;
-      background: transparent;
-      color: rgba(250, 248, 244, 0.78);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.81rem;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      text-align: center;
-      border-radius: 100px;
-      border: 1px solid rgba(250, 248, 244, 0.28);
-      transition: border-color 0.3s, background 0.3s, color 0.3s, transform 0.3s;
+    display: block; width: 100%; padding: 16px 36px;
+    background: transparent; color: rgba(250, 248, 244, 0.78);
+    font-family: 'Jost', sans-serif; font-size: 0.81rem; font-weight: 400;
+    letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; text-align: center;
+    border-radius: 100px; border: 1px solid rgba(250, 248, 244, 0.28);
+    transition: border-color 0.3s, background 0.3s, color 0.3s, transform 0.3s;
     }
     .btn-outline:hover {
-      border-color: rgba(250, 248, 244, 0.62);
-      background: rgba(250, 248, 244, 0.07);
-      color: rgba(250, 248, 244, 1);
-      transform: translateY(-2px);
+    border-color: rgba(250, 248, 244, 0.62); background: rgba(250, 248, 244, 0.07);
+    color: rgba(250, 248, 244, 1); transform: translateY(-2px);
     }
 
-    /* ── Mute/Unmute button (bottom-right) ── */
     .mute-btn {
-      position: absolute;
-      bottom: 30px;
-      right: 36px;
-      z-index: 11;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 16px 9px 12px;
-      background: rgba(var(--hero-dark), 0.38);
-      border: 1px solid rgba(250, 248, 244, 0.20);
-      border-radius: 100px;
-      color: rgba(250, 248, 244, 0.78);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.70rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s;
-      opacity: 0;
-      animation: heroRise 1s 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    position: absolute; bottom: 30px; right: 36px; z-index: 11;
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px 9px 12px;
+    background: rgba(var(--hero-dark), 0.38); border: 1px solid rgba(250, 248, 244, 0.20);
+    border-radius: 100px; color: rgba(250, 248, 244, 0.78);
+    font-family: 'Jost', sans-serif; font-size: 0.70rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s;
+    opacity: 0; animation: heroRise 1s 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .mute-btn:hover {
-      background: rgba(var(--hero-dark), 0.55);
-      border-color: rgba(250, 248, 244, 0.45);
-      color: rgba(250, 248, 244, 1);
-      transform: translateY(-2px);
+    background: rgba(var(--hero-dark), 0.55); border-color: rgba(250, 248, 244, 0.45);
+    color: rgba(250, 248, 244, 1); transform: translateY(-2px);
     }
     .mute-btn svg { flex-shrink: 0; }
 
     @media (max-width: 600px) {
-      .mute-btn { bottom: 20px; right: 20px; }
+    .mute-btn { bottom: 20px; right: 20px; }
     }
 
-    /* ── Scroll cue (vertical text + line, right side) ── */
     .scroll-cue {
-      position: absolute;
-      top: 50%;
-      right: 36px;
-      transform: translateY(-50%);
-      z-index: 11;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      opacity: 0;
-      animation: heroRise 1s 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    position: absolute; top: 50%; right: 36px; transform: translateY(-50%); z-index: 11;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0; animation: heroRise 1s 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .scroll-cue-text {
-      font-size: 0.58rem;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: rgba(250, 248, 244, 0.28);
-      writing-mode: vertical-rl;
+    font-size: 0.58rem; letter-spacing: 0.26em; text-transform: uppercase;
+    color: rgba(250, 248, 244, 0.28); writing-mode: vertical-rl;
     }
     .scroll-cue-line {
-      width: 1px;
-      height: 44px;
-      background: linear-gradient(to bottom, rgba(250, 248, 244, 0.28), transparent);
-      animation: scrollPulse 2.4s ease-in-out infinite;
+    width: 1px; height: 44px;
+    background: linear-gradient(to bottom, rgba(250, 248, 244, 0.28), transparent);
+    animation: scrollPulse 2.4s ease-in-out infinite;
     }
     @keyframes scrollPulse {
-      0%, 100% { transform: scaleY(1);   opacity: 0.45; }
-      50%       { transform: scaleY(1.3); opacity: 0.9;  }
+    0%, 100% { transform: scaleY(1); opacity: 0.45; }
+    50%       { transform: scaleY(1.3); opacity: 0.9;  }
     }
 
-    /* ── Hero entrance animations ── */
+    @media (max-width: 680px) {
+    .hero-gradient {
+        background: linear-gradient(to top, rgba(var(--hero-dark), 0.97) 0%, rgba(var(--hero-dark), 0.85) 20%, rgba(var(--hero-dark), 0.60) 38%, rgba(var(--hero-dark), 0.28) 56%, rgba(var(--hero-dark), 0.05) 72%, transparent 100%);
+    }
+    }
     @keyframes heroRise {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─────────────────────────────────────────────
-       WAVE TRANSITIONS
-    ───────────────────────────────────────────── */
     .wave { display: block; width: 100%; line-height: 0; overflow: hidden; }
     .wave svg { display: block; width: 100%; }
 
     /* ─────────────────────────────────────────────
-       SHARED SECTION STYLES
+    SHARED SECTIONS
     ───────────────────────────────────────────── */
     .sec { padding: 100px 24px; position: relative; }
     .sec-inner { max-width: 1080px; margin: 0 auto; }
     .sec-sand { background: var(--sand); }
 
     .sec-tag {
-      display: block;
-      font-size: 0.67rem;
-      font-weight: 500;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: 18px;
+    display: block; font-size: 0.67rem; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 18px;
     }
     .sec-title {
-      font-family: 'Lora', serif;
-      font-size: clamp(1.85rem, 3.2vw, 2.8rem);
-      font-weight: 400;
-      line-height: 1.24;
-      color: var(--forest);
-      margin-bottom: 18px;
+    font-family: 'Lora', serif; font-size: clamp(1.85rem, 3.2vw, 2.8rem); font-weight: 400; line-height: 1.24;
+    color: var(--forest); margin-bottom: 18px;
     }
-    .sec-body {
-      font-size: 1rem;
-      font-weight: 300;
-      line-height: 1.9;
-      color: var(--stone);
-    }
+    .sec-body { font-size: 1rem; font-weight: 300; line-height: 1.9; color: var(--stone); }
 
-    /* ─────────────────────────────────────────────
-       QUOTE STRIP
-    ───────────────────────────────────────────── */
     .quote-strip {
-      background: var(--forest);
-      padding: 90px 24px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    background: var(--forest); padding: 90px 24px; text-align: center; position: relative; overflow: hidden;
     }
     .quote-strip::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 80% at 50% 50%,
-        rgba(138, 175, 126, 0.11) 0%, transparent 70%);
-      pointer-events: none;
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(138, 175, 126, 0.11) 0%, transparent 70%); pointer-events: none;
     }
     .qtext {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: clamp(1.45rem, 2.8vw, 2.3rem);
-      font-weight: 400;
-      line-height: 1.58;
-      color: rgba(250, 248, 244, 0.86);
-      max-width: 680px;
-      margin: 0 auto 26px;
+    font-family: 'Lora', serif; font-style: italic; font-size: clamp(1.45rem, 2.8vw, 2.3rem); font-weight: 400;
+    line-height: 1.58; color: rgba(250, 248, 244, 0.86); max-width: 680px; margin: 0 auto 26px;
     }
     .qtext em { color: var(--sage); font-style: normal; }
-    .qattr {
-      font-size: 0.73rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(250, 248, 244, 0.30);
-    }
+    .qattr { font-size: 0.73rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(250, 248, 244, 0.30); }
 
-    /* ─────────────────────────────────────────────
-       STEPS
-    ───────────────────────────────────────────── */
     .steps-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 22px;
-      margin-top: 60px;
+    display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 60px;
     }
-    @media (min-width: 768px) {
-      .steps-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
     .step {
-      background: var(--ivory);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 48px 36px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
+    background: var(--ivory); border: 1px solid var(--line); border-radius: 12px; padding: 48px 36px;
+    position: relative; overflow: hidden; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
     }
     .step::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--sage-pale), var(--sage), var(--sage-pale));
-      opacity: 0;
-      transition: opacity 0.4s;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--sage-pale), var(--sage), var(--sage-pale)); opacity: 0; transition: opacity 0.4s;
     }
     .step:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(45, 59, 45, 0.09); }
     .step:hover::before { opacity: 1; }
     .step-num {
-      font-family: 'Lora', serif;
-      font-size: 3.4rem;
-      font-weight: 400;
-      color: var(--sage-pale);
-      line-height: 1;
-      margin-bottom: 20px;
+    font-family: 'Lora', serif; font-size: 3.4rem; font-weight: 400; color: var(--sage-pale); line-height: 1; margin-bottom: 20px;
     }
     .step-name {
-      font-family: 'Lora', serif;
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: var(--forest);
-      margin-bottom: 12px;
+    font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 500; color: var(--forest); margin-bottom: 12px;
     }
     .step-desc { font-size: 0.92rem; font-weight: 300; line-height: 1.82; color: var(--stone); }
 
-    /* ─────────────────────────────────────────────
-       TESTIMONIALS
-    ───────────────────────────────────────────── */
-    .tgrid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 22px;
-      margin-top: 60px;
-    }
-    @media (min-width: 768px) {
-      .tgrid { grid-template-columns: repeat(3, 1fr); }
-    }
+    .tgrid { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 60px; }
+    @media (min-width: 768px) { .tgrid { grid-template-columns: repeat(3, 1fr); } }
     .tcard {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 40px 32px;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s;
+    background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 40px 32px;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s;
     }
     .tcard:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(45, 59, 45, 0.07); }
     .stars { display: flex; gap: 4px; margin-bottom: 20px; }
     .star { width: 14px; height: 14px; fill: var(--warm); }
     .tq {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: 1.08rem;
-      font-weight: 400;
-      line-height: 1.72;
-      color: var(--forest);
-      margin-bottom: 24px;
+    font-family: 'Lora', serif; font-style: italic; font-size: 1.08rem; font-weight: 400; line-height: 1.72; color: var(--forest); margin-bottom: 24px;
     }
     .ta { font-size: 0.76rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
     .ta-role { font-size: 0.76rem; color: var(--sage); margin-top: 3px; }
 
-    /* ─────────────────────────────────────────────
-       YOUTUBE SHORTS
-    ───────────────────────────────────────────── */
-    .yt-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-top: 56px;
-    }
-    @media (min-width: 640px) {
-      .yt-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    .yt-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 56px; }
+    @media (min-width: 640px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
     .yt-tile {
-      border-radius: 12px;
-      overflow: hidden;
-      aspect-ratio: 9 / 16;
-      max-height: 400px;
-      background: var(--forest);
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
+    border-radius: 12px; overflow: hidden; aspect-ratio: 9 / 16; max-height: 400px; background: var(--forest);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
     }
     .yt-tile:hover { transform: scale(1.025); box-shadow: 0 16px 50px rgba(45, 59, 45, 0.18); }
     .yt-inner {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 14px;
-      width: 100%; height: 100%;
-      text-decoration: none;
-      background: linear-gradient(155deg, rgba(62, 82, 64, 0.92), rgba(45, 59, 45, 1));
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; width: 100%; height: 100%;
+    text-decoration: none; background: linear-gradient(155deg, rgba(62, 82, 64, 0.92), rgba(45, 59, 45, 1));
     }
     .yt-btn {
-      width: 50px; height: 50px;
-      background: rgba(250, 248, 244, 0.10);
-      border-radius: 50%;
-      border: 1.5px solid rgba(250, 248, 244, 0.22);
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(6px);
-      transition: background 0.3s, transform 0.3s;
+    width: 50px; height: 50px; background: rgba(250, 248, 244, 0.10); border-radius: 50%; border: 1.5px solid rgba(250, 248, 244, 0.22);
+    display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: background 0.3s, transform 0.3s;
     }
     .yt-tile:hover .yt-btn { background: rgba(138, 175, 126, 0.30); transform: scale(1.1); }
-    .yt-lbl {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      font-size: 0.85rem;
-      color: rgba(250, 248, 244, 0.45);
-    }
+    .yt-lbl { font-family: 'Lora', serif; font-style: italic; font-size: 0.85rem; color: rgba(250, 248, 244, 0.45); }
     .yt-more {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 40px;
-      font-size: 0.76rem; font-weight: 500;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--sage); text-decoration: none;
-      transition: gap 0.3s;
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 40px; font-size: 0.76rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage); text-decoration: none; transition: gap 0.3s;
     }
     .yt-more:hover { gap: 12px; }
     .yt-more svg { transition: transform 0.3s; }
     .yt-more:hover svg { transform: translateX(4px); }
 
-    /* ─────────────────────────────────────────────
-       FINALE CTA
-    ───────────────────────────────────────────── */
     .finale {
-      background: var(--forest);
-      text-align: center;
-      padding: 120px 24px;
-      position: relative;
-      overflow: hidden;
+    background: var(--forest); text-align: center; padding: 120px 24px; position: relative; overflow: hidden;
     }
     .finale::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 55% 50% at 18% 82%, rgba(138, 175, 126, 0.12), transparent),
-        radial-gradient(ellipse 45% 55% at 80% 20%, rgba(184, 154, 106, 0.08), transparent);
-      pointer-events: none;
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 50% at 18% 82%, rgba(138, 175, 126, 0.12), transparent), radial-gradient(ellipse 45% 55% at 80% 20%, rgba(184, 154, 106, 0.08), transparent);
+    pointer-events: none;
     }
     .finale .sec-tag  { color: rgba(212, 228, 206, 0.65); }
     .finale .sec-title { color: rgba(250, 248, 244, 0.90); max-width: 580px; margin: 0 auto 18px; }
     .finale .sec-body  { color: rgba(250, 248, 244, 0.42); margin: 0 auto 52px; text-align: center; max-width: 460px; }
-    .finale-btns {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 14px;
-      max-width: 340px; margin: 0 auto;
-    }
+    .finale-btns { display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 340px; margin: 0 auto; }
     .btn-light {
-      display: block; width: 100%; padding: 18px 40px;
-      background: rgba(250, 248, 244, 0.92); color: var(--forest);
-      font-family: 'Jost', sans-serif; font-size: 0.83rem; font-weight: 500;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      text-decoration: none; text-align: center; border-radius: 100px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
-      transition: background 0.3s, transform 0.3s;
+    display: block; width: 100%; padding: 18px 40px; background: rgba(250, 248, 244, 0.92); color: var(--forest);
+    font-family: 'Jost', sans-serif; font-size: 0.83rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; text-align: center; border-radius: 100px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+    transition: background 0.3s, transform 0.3s;
     }
     .btn-light:hover { background: var(--white); transform: translateY(-2px); }
     .btn-ghost {
-      display: block; width: 100%; padding: 17px 40px;
-      background: transparent; color: rgba(250, 248, 244, 0.55);
-      font-family: 'Jost', sans-serif; font-size: 0.83rem; font-weight: 400;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; text-align: center; border-radius: 100px;
-      border: 1px solid rgba(250, 248, 244, 0.18);
-      transition: border-color 0.3s, color 0.3s, transform 0.3s;
+    display: block; width: 100%; padding: 17px 40px; background: transparent; color: rgba(250, 248, 244, 0.55);
+    font-family: 'Jost', sans-serif; font-size: 0.83rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; text-align: center; border-radius: 100px; border: 1px solid rgba(250, 248, 244, 0.18);
+    transition: border-color 0.3s, color 0.3s, transform 0.3s;
     }
     .btn-ghost:hover { border-color: rgba(250, 248, 244, 0.45); color: rgba(250, 248, 244, 0.82); transform: translateY(-2px); }
 
-    /* ─────────────────────────────────────────────
-       FOOTER
-    ───────────────────────────────────────────── */
     footer { background: #1D281D; padding: 50px 24px; text-align: center; }
     .footer-logo {
-      font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 500;
-      letter-spacing: 0.06em; color: rgba(250, 248, 244, 0.65); margin-bottom: 14px;
+    font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.06em; color: rgba(250, 248, 244, 0.65); margin-bottom: 14px;
     }
     .footer-logo span { color: var(--warm); font-style: italic; }
     footer p { font-size: 0.73rem; color: rgba(250, 248, 244, 0.20); letter-spacing: 0.06em; line-height: 2.1; }
 
-    /* ─────────────────────────────────────────────
-       SCROLL REVEAL (below-hero sections)
-    ───────────────────────────────────────────── */
     .reveal {
-      opacity: 0;
-      transform: translateY(26px);
-      transition:
-        opacity   0.9s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0; transform: translateY(26px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .reveal.vis { opacity: 1; transform: none; }
-  </style>
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     NAVBAR
-     Starts transparent; gains .scrolled once
-     hero leaves the viewport.
-════════════════════════════════════════════ -->
 <nav id="site-nav">
-  <a class="nav-logo" href="#">Ido <span>Grinberg</span></a>
-  <div class="nav-links">
+<a class="nav-logo" href="#">Ido <span>Grinberg</span></a>
+<div class="nav-links">
     <a href="#about">About</a>
     <a href="#process">Process</a>
     <a href="#quiz" class="nav-pill">Take the Quiz</a>
-  </div>
+</div>
 </nav>
 
-<!-- ═══════════════════════════════════════════
-     HERO
-     Full-screen Vimeo background.
-     Content block pinned to bottom-third.
-════════════════════════════════════════════ -->
 <section class="hero" id="home">
 
-  <!-- Vimeo background (background=1 → autoplay, loop, muted, no UI) -->
-  <div class="hero-video-bg">
+<div class="hero-video-bg">
     <iframe
-      id="vimeo-bg"
-      src="https://player.vimeo.com/video/1169386223?h=da765d6f89&background=1&autoplay=1&loop=1&muted=1&quality=auto"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen
-      title="Ido Grinberg background video">
+    id="vimeo-bg"
+    src="https://player.vimeo.com/video/1169386223?h=da765d6f89&background=1&autoplay=1&loop=1&muted=1&quality=auto"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    title="Ido Grinberg background video">
     </iframe>
-  </div>
+</div>
 
-  <!-- Overlay layers (tint / gradient / vignette) -->
-  <div class="hero-tint"></div>
-  <div class="hero-gradient"></div>
-  <div class="hero-vignette"></div>
+<div class="hero-tint"></div>
+<div class="hero-gradient"></div>
+<div class="hero-vignette"></div>
 
-  <!-- ── Content: text left, buttons right ── -->
-  <div class="hero-inner">
+<div class="hero-inner">
 
-    <!-- Left: eyebrow + headline + subtitle -->
     <div class="hero-text-col">
-      <p class="hero-tag">Private Mentorship</p>
-      <h1>
+    <p class="hero-tag">Private Mentorship</p>
+    <h1>
         Stop Living<br>
         in Your Mind<br>
         and <em>Start Living</em><br>
         Your Life.
-      </h1>
-      <p class="hero-sub">
+    </h1>
+    <p class="hero-sub">
         Private mentorship to break the cycle of mental exhaustion
         and get total clarity on your next chapter.
-      </p>
+    </p>
     </div>
 
-    <!-- Right: buttons stacked -->
     <div class="hero-cta-col">
-      <div class="cta-item">
-        <p class="cta-hint">Ready for change?</p>
+    <div class="cta-item">
+        <a href="#quiz" class="cta-hint">Ready for change?</a>
         <a href="#quiz" class="btn-primary">Take the Clarity Quiz</a>
-      </div>
-      <div class="cta-item">
-        <p class="cta-hint">The 4 Bodies Alignment Audit</p>
+    </div>
+    <div class="cta-item">
+        <a href="#mini-course" class="cta-hint">The 4 Bodies Alignment Audit</a>
         <a href="#mini-course" class="btn-outline">Watch Free Mini-Course</a>
-      </div>
+    </div>
     </div>
 
-  </div>
+</div>
 
-  <!-- ── Mute / Unmute toggle (bottom-right) ── -->
-  <button class="mute-btn" id="muteBtn" aria-label="Toggle audio">
-    <!-- Muted icon — shown by default -->
+<button class="mute-btn" id="muteBtn" aria-label="Toggle audio">
     <svg id="icon-muted" width="16" height="16" viewBox="0 0 24 24"
-      fill="none" stroke="currentColor" stroke-width="1.8"
-      stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
+    fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
     </svg>
-    <!-- Sound icon — hidden by default -->
     <svg id="icon-sound" width="16" height="16" viewBox="0 0 24 24"
-      fill="none" stroke="currentColor" stroke-width="1.8"
-      stroke-linecap="round" stroke-linejoin="round"
-      style="display:none;">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round"
+    style="display:none;">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
     </svg>
     <span id="muteLabel">Unmute</span>
-  </button>
+</button>
 
-  <!-- ── Scroll cue (vertical, right side) ── -->
-  <div class="scroll-cue" aria-hidden="true">
+<div class="scroll-cue" aria-hidden="true">
     <span class="scroll-cue-text">Scroll</span>
     <div class="scroll-cue-line"></div>
-  </div>
+</div>
 
 </section>
 
-<!-- WAVE: hero → quote strip -->
 <div class="wave">
-  <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,0 L0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,0 Z" fill="#0e140e" opacity="0.35"/>
     <path d="M0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,72 L0,72 Z" fill="#2D3B2D"/>
-  </svg>
+</svg>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     QUOTE STRIP
-════════════════════════════════════════════ -->
 <div class="quote-strip" id="about">
-  <blockquote class="qtext reveal">
+<blockquote class="qtext reveal">
     "Clarity isn't a destination — it's a <em>daily practice</em><br>of returning to yourself."
-  </blockquote>
-  <p class="qattr reveal">— Ido Grinberg</p>
+</blockquote>
+<p class="qattr reveal">— Ido Grinberg</p>
 </div>
 
-<!-- WAVE: quote strip → about -->
 <div class="wave">
-  <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,0 L0,36 Q360,0 720,36 Q1080,72 1440,36 L1440,0 Z" fill="#2D3B2D"/>
     <path d="M0,36 Q360,0 720,36 Q1080,72 1440,36 L1440,72 L0,72 Z" fill="#F0EDE5"/>
-  </svg>
+</svg>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     ABOUT
-════════════════════════════════════════════ -->
 <section class="sec sec-sand">
-  <div class="sec-inner" style="display:grid; grid-template-columns:1fr; gap:52px; align-items:center; max-width:960px;">
+<div class="sec-inner" style="display:grid; grid-template-columns:1fr; gap:52px; align-items:center; max-width:960px;">
     <div class="reveal">
-      <span class="sec-tag">About Ido</span>
-      <h2 class="sec-title">When you stop fighting your mind,<br>life opens up.</h2>
-      <p class="sec-body" style="max-width:510px;">
+    <span class="sec-tag">About Ido</span>
+    <h2 class="sec-title">When you stop fighting your mind,<br>life opens up.</h2>
+    <p class="sec-body" style="max-width:510px;">
         I work with high-achievers who feel trapped inside their own heads — successful by every outside measure, yet quietly disconnected from what truly matters. My approach blends somatic awareness, energetic alignment, and deep strategic mentorship to move you from survival mode into authentic, grounded living.
-      </p>
+    </p>
     </div>
     <div class="reveal" style="display:flex; flex-direction:column; gap:14px;">
-      <div style="background:var(--ivory); border:1px solid var(--line); border-radius:10px; padding:30px 34px;">
+    <div style="background:var(--ivory); border:1px solid var(--line); border-radius:10px; padding:30px 34px;">
         <p style="font-family:'Lora',serif; font-style:italic; font-size:0.94rem; color:var(--forest); line-height:1.72; margin-bottom:14px;">"Ido helped me see I wasn't broken — I was just out of alignment. The shift was profound and lasting."</p>
         <p style="font-size:0.73rem; letter-spacing:0.11em; text-transform:uppercase; color:var(--stone);">Maya R. &nbsp;·&nbsp; Executive Coach</p>
-      </div>
-      <div style="background:var(--ivory); border:1px solid var(--line); border-radius:10px; padding:30px 34px;">
+    </div>
+    <div style="background:var(--ivory); border:1px solid var(--line); border-radius:10px; padding:30px 34px;">
         <p style="font-family:'Lora',serif; font-style:italic; font-size:0.94rem; color:var(--forest); line-height:1.72; margin-bottom:14px;">"Three sessions and I had more clarity than a decade of therapy. Ido holds a rare and powerful space."</p>
         <p style="font-size:0.73rem; letter-spacing:0.11em; text-transform:uppercase; color:var(--stone);">James O. &nbsp;·&nbsp; Startup Founder</p>
-      </div>
     </div>
-  </div>
+    </div>
+</div>
 </section>
 
-<!-- WAVE: about → steps -->
 <div class="wave">
-  <svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,0 Q720,56 1440,0 L1440,56 L0,56 Z" fill="#F0EDE5"/>
-  </svg>
+</svg>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     STEPS / PROCESS
-════════════════════════════════════════════ -->
 <section class="sec" id="process">
-  <div class="sec-inner">
+<div class="sec-inner">
     <div class="reveal" style="text-align:center; max-width:520px; margin:0 auto 60px;">
-      <span class="sec-tag">The Journey</span>
-      <h2 class="sec-title">A path built for you</h2>
-      <p class="sec-body">Three gentle, purposeful stages to move you from mental fog into aligned, peaceful action.</p>
+    <span class="sec-tag">The Journey</span>
+    <h2 class="sec-title">A path built for you</h2>
+    <p class="sec-body">Three gentle, purposeful stages to move you from mental fog into aligned, peaceful action.</p>
     </div>
     <div class="steps-grid">
-      <div class="step reveal" style="transition-delay:0s">
+    <div class="step reveal" style="transition-delay:0s">
         <div class="step-num">01</div>
         <div class="step-name">Take the Clarity Quiz</div>
         <p class="step-desc">Two honest minutes to understand exactly where you are. This isn't a test — it's an invitation to be truly seen.</p>
-      </div>
-      <div class="step reveal" style="transition-delay:0.13s">
+    </div>
+    <div class="step reveal" style="transition-delay:0.13s">
         <div class="step-num">02</div>
         <div class="step-name">Free Intro Session</div>
         <p class="step-desc">A no-pressure 20-minute conversation. We explore your world together and sense whether working together is a genuine fit.</p>
-      </div>
-      <div class="step reveal" style="transition-delay:0.26s">
+    </div>
+    <div class="step reveal" style="transition-delay:0.26s">
         <div class="step-num">03</div>
         <div class="step-name">Private Mentorship</div>
         <p class="step-desc">Deep, personalised 1-on-1 work to break old cycles, recalibrate your direction, and build a life that breathes freely.</p>
-      </div>
     </div>
-  </div>
+    </div>
+</div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     TESTIMONIALS
-════════════════════════════════════════════ -->
 <section class="sec sec-sand">
-  <div class="sec-inner">
+<div class="sec-inner">
     <div class="reveal" style="text-align:center; max-width:480px; margin:0 auto 60px;">
-      <span class="sec-tag">What People Say</span>
-      <h2 class="sec-title">Real words, real shifts</h2>
+    <span class="sec-tag">What People Say</span>
+    <h2 class="sec-title">Real words, real shifts</h2>
     </div>
     <div class="tgrid">
-      <div class="tcard reveal" style="transition-delay:0s">
+    <div class="tcard reveal" style="transition-delay:0s">
         <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
         <p class="tq">"I spent years achieving everything I thought I wanted, yet felt completely lost. After two months with Ido, I feel more inner peace than in a decade."</p>
         <p class="ta">Sarah M.</p>
         <p class="ta-role">Executive, New York</p>
-      </div>
-      <div class="tcard reveal" style="transition-delay:0.12s">
+    </div>
+    <div class="tcard reveal" style="transition-delay:0.12s">
         <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
         <p class="tq">"Ido helped me see patterns I had been blind to for years. The 4 Bodies framework alone transformed how I approach every decision."</p>
         <p class="ta">Daniel K.</p>
         <p class="ta-role">Entrepreneur, Tel Aviv</p>
-      </div>
-      <div class="tcard reveal" style="transition-delay:0.24s">
+    </div>
+    <div class="tcard reveal" style="transition-delay:0.24s">
         <div class="stars">
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
         <p class="tq">"I came in overthinking everything. I left with a quietness I didn't think was possible. Ido holds space in a way that is rare and deeply effective."</p>
         <p class="ta">Rachel T.</p>
         <p class="ta-role">Creative Director, London</p>
-      </div>
     </div>
-  </div>
+    </div>
+</div>
 </section>
 
-<!-- WAVE: sand → linen -->
 <div class="wave">
-  <svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,56 Q360,0 720,28 Q1080,56 1440,20 L1440,56 L0,56 Z" fill="#F0EDE5"/>
     <path d="M0,0 L0,56 Q360,0 720,28 Q1080,56 1440,20 L1440,0 Z" fill="#FAF8F4"/>
-  </svg>
+</svg>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     YOUTUBE SHORTS
-════════════════════════════════════════════ -->
 <section class="sec" id="shorts">
-  <div class="sec-inner">
+<div class="sec-inner">
     <div class="reveal" style="text-align:center; max-width:480px; margin:0 auto;">
-      <span class="sec-tag">Short Reflections</span>
-      <h2 class="sec-title">A thought to carry with you</h2>
-      <p class="sec-body">Bite-sized insights for your journey — new perspectives, delivered often.</p>
+    <span class="sec-tag">Short Reflections</span>
+    <h2 class="sec-title">A thought to carry with you</h2>
+    <p class="sec-body">Bite-sized insights for your journey — new perspectives, delivered often.</p>
     </div>
     <div class="yt-grid">
-      <div class="yt-tile reveal" style="transition-delay:0s">
+    <div class="yt-tile reveal" style="transition-delay:0s">
         <a class="yt-inner" href="https://www.youtube.com/@idogrin/shorts" target="_blank" rel="noopener">
-          <div class="yt-btn">
+        <div class="yt-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(250,248,244,0.88)"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <span class="yt-lbl">Latest Short</span>
+        </div>
+        <span class="yt-lbl">Latest Short</span>
         </a>
-      </div>
-      <div class="yt-tile reveal" style="transition-delay:0.1s">
+    </div>
+    <div class="yt-tile reveal" style="transition-delay:0.1s">
         <a class="yt-inner" href="https://www.youtube.com/@idogrin/shorts" target="_blank" rel="noopener">
-          <div class="yt-btn">
+        <div class="yt-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(250,248,244,0.88)"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <span class="yt-lbl">On Clarity</span>
+        </div>
+        <span class="yt-lbl">On Clarity</span>
         </a>
-      </div>
-      <div class="yt-tile reveal" style="transition-delay:0.2s">
+    </div>
+    <div class="yt-tile reveal" style="transition-delay:0.2s">
         <a class="yt-inner" href="https://www.youtube.com/@idogrin/shorts" target="_blank" rel="noopener">
-          <div class="yt-btn">
+        <div class="yt-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(250,248,244,0.88)"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <span class="yt-lbl">On Alignment</span>
+        </div>
+        <span class="yt-lbl">On Alignment</span>
         </a>
-      </div>
+    </div>
     </div>
     <div style="text-align:center;">
-      <a class="yt-more reveal" href="https://www.youtube.com/@idogrin/shorts" target="_blank" rel="noopener">
+    <a class="yt-more reveal" href="https://www.youtube.com/@idogrin/shorts" target="_blank" rel="noopener">
         View all Shorts
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
-      </a>
+    </a>
     </div>
-  </div>
+</div>
 </section>
 
-<!-- WAVE: linen → forest -->
 <div class="wave">
-  <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,0 L0,40 Q360,64 720,32 Q1080,0 1440,40 L1440,0 Z" fill="#FAF8F4"/>
     <path d="M0,40 Q360,64 720,32 Q1080,0 1440,40 L1440,64 L0,64 Z" fill="#2D3B2D"/>
-  </svg>
+</svg>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     FINALE CTA
-════════════════════════════════════════════ -->
 <section class="finale" id="quiz">
-  <div class="sec-inner" style="position:relative; z-index:1; text-align:center;">
+<div class="sec-inner" style="position:relative; z-index:1; text-align:center;">
     <span class="sec-tag reveal">Your Path Starts Here</span>
     <h2 class="sec-title reveal">Two minutes of honesty<br>can change everything.</h2>
     <p class="sec-body reveal">
-      Take the Clarity Quiz to understand exactly where you are —
-      so we can make the most of our time together.
+    Take the Clarity Quiz to understand exactly where you are —
+    so we can make the most of our time together.
     </p>
     <div class="finale-btns">
-      <a href="/clarity-quiz" class="btn-light reveal">Take the Clarity Quiz</a>
-      <a href="#mini-course" class="btn-ghost reveal" id="mini-course">Watch Free Mini-Course</a>
+    <a href="/clarity-quiz" class="btn-light reveal">Take the Clarity Quiz</a>
+    <a href="#mini-course" class="btn-ghost reveal" id="mini-course">Watch Free Mini-Course</a>
     </div>
-  </div>
+</div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-logo">Ido <span>Grinberg</span></div>
-  <p>Private Mentorship &nbsp;·&nbsp; Clarity &nbsp;·&nbsp; Alignment</p>
-  <p style="margin-top:6px;">&copy; 2025 Ido Grinberg. All rights reserved.</p>
+<div class="footer-logo">Ido <span>Grinberg</span></div>
+<p>Private Mentorship &nbsp;·&nbsp; Clarity &nbsp;·&nbsp; Alignment</p>
+<p style="margin-top:6px;">&copy; 2025 Ido Grinberg. All rights reserved.</p>
 </footer>
 
-<!-- ═══════════════════════════════════════════
-     SCRIPTS
-════════════════════════════════════════════ -->
 <script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-  /* ── 1. Vimeo Player: mute / unmute ── */
-  const player    = new Vimeo.Player('vimeo-bg');
-  const muteBtn   = document.getElementById('muteBtn');
-  const iconMuted = document.getElementById('icon-muted');
-  const iconSound = document.getElementById('icon-sound');
-  const muteLabel = document.getElementById('muteLabel');
-  let   isMuted   = true; // starts muted per browser policy
+const player    = new Vimeo.Player('vimeo-bg');
+const muteBtn   = document.getElementById('muteBtn');
+const iconMuted = document.getElementById('icon-muted');
+const iconSound = document.getElementById('icon-sound');
+const muteLabel = document.getElementById('muteLabel');
+let   isMuted   = true;
 
-  muteBtn.addEventListener('click', () => {
+muteBtn.addEventListener('click', () => {
     isMuted = !isMuted;
     player.setMuted(isMuted);
     player.setVolume(isMuted ? 0 : 1);
     iconMuted.style.display = isMuted ? 'block' : 'none';
     iconSound.style.display = isMuted ? 'none'  : 'block';
     muteLabel.textContent   = isMuted ? 'Unmute' : 'Mute';
-  });
+});
 
-  /* ── 2. Navbar: transparent on hero, solid after ──
-     IntersectionObserver fires when the hero section
-     exits the viewport (threshold 0.05 → ~5% visible).
-     Adding .scrolled applies the frosted-glass styles.
-  ── */
-  const siteNav     = document.getElementById('site-nav');
-  const heroSection = document.getElementById('home');
-
-  const navObserver = new IntersectionObserver(
+const siteNav     = document.getElementById('site-nav');
+const heroSection = document.getElementById('home');
+const navObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach(entry => {
-        // hero out of view → show solid nav; hero in view → transparent
+    entries.forEach(entry => {
         siteNav.classList.toggle('scrolled', !entry.isIntersecting);
-      });
+    });
     },
     { threshold: 0.05 }
-  );
-  navObserver.observe(heroSection);
+);
+navObserver.observe(heroSection);
 
-  /* ── 3. Scroll-reveal for below-hero sections ── */
-  const revealObserver = new IntersectionObserver(
+const revealObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach(entry => {
+    entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('vis');
-          revealObserver.unobserve(entry.target);
+        entry.target.classList.add('vis');
+        revealObserver.unobserve(entry.target);
         }
-      });
+    });
     },
     { threshold: 0.10, rootMargin: '0px 0px -40px 0px' }
-  );
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+);
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 </script>
 
 </body>
