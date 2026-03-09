@@ -53,35 +53,54 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
       padding: 22px 44px;
-      background: rgba(250,248,244,0.84);
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      transition: background 0.5s ease, backdrop-filter 0.5s ease,
+                  border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+    /* Scrolled state — applied via JS */
+    nav.scrolled {
+      background: rgba(250,248,244,0.88);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid rgba(176,169,152,0.15);
-      transition: box-shadow 0.4s;
+      box-shadow: 0 2px 24px rgba(45,59,45,0.07);
     }
     .nav-logo {
       font-family: 'Lora', serif;
       font-size: 1.1rem; font-weight: 500;
-      letter-spacing: 0.06em; color: var(--forest);
+      letter-spacing: 0.06em; color: rgba(250,248,244,0.92);
       text-decoration: none;
+      transition: color 0.5s;
     }
-    .nav-logo span { color: var(--warm); font-style: italic; }
+    nav.scrolled .nav-logo { color: var(--forest); }
+    .nav-logo span { color: var(--sage-pale); font-style: italic; transition: color 0.5s; }
+    nav.scrolled .nav-logo span { color: var(--warm); }
 
     .nav-links { display: flex; align-items: center; gap: 36px; }
     .nav-links a {
       font-size: 0.76rem; font-weight: 400;
       letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--stone); text-decoration: none;
+      color: rgba(250,248,244,0.72); text-decoration: none;
       transition: color 0.3s;
     }
-    .nav-links a:hover { color: var(--forest); }
+    nav.scrolled .nav-links a { color: var(--stone); }
+    .nav-links a:hover { color: rgba(250,248,244,1); }
+    nav.scrolled .nav-links a:hover { color: var(--forest); }
     .nav-pill {
+      color: var(--forest) !important;
+      background: rgba(250,248,244,0.9);
+      padding: 10px 24px; border-radius: 100px;
+      transition: background 0.3s, transform 0.25s, color 0.3s !important;
+    }
+    nav.scrolled .nav-pill {
       color: var(--white) !important;
       background: var(--forest);
-      padding: 10px 24px; border-radius: 100px;
-      transition: background 0.3s, transform 0.25s !important;
     }
-    .nav-pill:hover { background: var(--forest-mid) !important; transform: translateY(-1px); }
+    .nav-pill:hover { background: rgba(250,248,244,1) !important; transform: translateY(-1px); }
+    nav.scrolled .nav-pill:hover { background: var(--forest-mid) !important; }
 
     /* ── HERO: full-screen video background ── */
     .hero {
@@ -112,34 +131,33 @@
     }
 
     /* ── OVERLAYS ── */
-    /* Gradient: darkens bottom-left where copy lives, fades top-right */
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(14,20,14,0.78) 0%,
-          rgba(14,20,14,0.55) 40%,
-          rgba(14,20,14,0.25) 70%,
-          rgba(14,20,14,0.12) 100%
-        );
+      background: rgba(14,20,14,0.22);
     }
-    /* Subtle vignette around edges */
     .hero-vignette {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: radial-gradient(ellipse at center,
-        transparent 40%,
-        rgba(14,20,14,0.35) 100%);
+        transparent 45%,
+        rgba(14,20,14,0.28) 100%);
     }
 
     /* ── HERO CONTENT ── */
     .hero-inner {
-      position: relative; z-index: 2;
-      width: 100%; max-width: 1180px;
-      padding: 0 32px;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 2;
+      padding: 0 52px 56px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      /* Stronger gradient behind text for legibility */
+      background: linear-gradient(
+        to top,
+        rgba(14,20,14,0.82) 0%,
+        rgba(14,20,14,0.55) 38%,
+        transparent 100%
+      );
     }
 
     .hero-tag {
@@ -221,22 +239,23 @@
     }
     .mute-btn svg { flex-shrink: 0; }
 
-    /* Scroll cue at bottom center */
+    /* Scroll cue — right side, vertically centered in upper half */
     .scroll-cue {
-      position: absolute; bottom: 36px; left: 50%;
-      transform: translateX(-50%);
+      position: absolute; top: 50%; right: 40px;
+      transform: translateY(-50%);
       z-index: 3; display: flex; flex-direction: column;
       align-items: center; gap: 8px;
       opacity: 0;
       animation: rise 1s 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
     }
     .scroll-cue span {
-      font-size: 0.64rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: rgba(250,248,244,0.3);
+      font-size: 0.6rem; letter-spacing: 0.24em;
+      text-transform: uppercase; color: rgba(250,248,244,0.28);
+      writing-mode: vertical-rl;
     }
     .scroll-line {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, rgba(250,248,244,0.3), transparent);
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, rgba(250,248,244,0.28), transparent);
       animation: scrollPulse 2.2s ease-in-out infinite;
     }
     @keyframes scrollPulse {
@@ -245,7 +264,10 @@
     }
 
     @media (min-width: 900px) {
-      .hero-inner { padding: 0 72px; }
+      .hero-inner { padding: 0 72px 64px; }
+    }
+    @media (max-width: 600px) {
+      .hero-inner { padding: 0 28px 48px; }
     }
 
     .btn-primary {
@@ -794,7 +816,7 @@
   const iconSound = document.getElementById('icon-sound');
   const muteLabel = document.getElementById('muteLabel');
 
-  let isMuted = true; // starts muted (background=1)
+  let isMuted = true;
 
   muteBtn.addEventListener('click', () => {
     isMuted = !isMuted;
@@ -805,19 +827,25 @@
     muteLabel.textContent   = isMuted ? 'Unmute' : 'Mute';
   });
 
-  // ── Gentle scroll-reveal ──
+  // ── Transparent → solid nav on scroll ──
+  const nav = document.querySelector('nav');
+  const heroSection = document.getElementById('home');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    // When hero is NOT intersecting (user has scrolled past it), show solid nav
+    entries.forEach(e => {
+      nav.classList.toggle('scrolled', !e.isIntersecting);
+    });
+  }, { threshold: 0.05 });
+  navObserver.observe(heroSection);
+
+  // ── Gentle scroll-reveal for sections below ──
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // ── Nav shadow on scroll ──
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.boxShadow = window.scrollY > 20 ? '0 2px 24px rgba(45,59,45,0.07)' : 'none';
-  }, { passive: true });
 </script>
 </body>
 </html>
